@@ -1,0 +1,101 @@
+<odoo>
+  <data>
+    
+    <record id="odoo_sync_tree" model="ir.ui.view">
+      <field name="name">Odoo Sync Tree View</field>
+      <field name="model">odoo_sync</field>
+      <field name="priority">2</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="type_sync"/>
+          <field name="url_database"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="odoo_sync_form" model="ir.ui.view">
+      <field name="name">Odoo Sync Form View</field>
+      <field name="model">odoo_sync</field>
+      <field name="arch" type="xml">
+        <form>
+          <header>
+            <button name="logging_db" string="Logging" type="object" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+            <button name="get_models" string="Get Models" type="object" attrs="{'invisible': [('state', '!=', 'logging')]}"/>
+            <button name="get_fields" string="Get Fields" type="object" attrs="{'invisible': [('state', '!=', 'logging')]}"/>
+            <button name="import_data" string="Import data" type="object" attrs="{'invisible': [('state', '!=', 'logging')]}"/>
+            <button name="update_data" string="Update data" type="object" attrs="{'invisible': [('state', '!=', 'logging')]}"/>
+            <field name="state"  widget="statusbar"/>
+          </header>
+          <sheet>
+            <div class="oe_title">
+              <h1>
+                <field name="name"/>
+              </h1>
+            </div>
+            <div>
+              <group>
+                <group>
+                  <field name="url_database" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                  <field name="database_name" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                </group>
+                <group>
+                  <field name="username_database" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                  <field name="password_username_database" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                </group>
+              </group>
+              <group>
+                <group>
+                  <field name="odoo_sync_id" invisible="1"/>
+                  <field name="type_sync" attrs="{'invisible': [('state', '=', 'draft')]}"/>
+                  <field name="ir_model_id" attrs="{'invisible': [('state', '=', 'draft')]}"/>
+                </group>
+                <group attrs="{'invisible': [('type_sync', '!=', 'partner')]}">
+                  <field name="type_import"/>
+                  <field name="start_date"/>
+                  <field name="end_date"/>
+                </group>
+              </group>
+            </div>
+            <notebook attrs="{'invisible': [('state', '=', 'draft')]}">
+              <page name="fields" string="Fields">
+                <field name="ir_model_fields_ids">
+                  <tree create="0" editable="bottom">
+                    <field name="odoo_sync_id" invisible="1"/>
+                    <field name="name" invisible="1"/>
+                    <field name="name_import" readonly="1"/>
+                    <field name="field_description_import" readonly="1"/>
+                    <field name="ttype_import" readonly="1"/>
+                    <field name="name_dest"/>
+                    <field name="ttype_dest" readonly="1"/>
+                    <field name="import_field"/>
+                  </tree>
+                </field>
+              </page>
+            </notebook>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="act_odoo_sync" model="ir.actions.act_window">
+      <field name="res_model">odoo_sync</field>
+      <field name="name">Odoo Sync</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_id" ref="odoo_sync_tree"></field>
+    </record>
+        
+    <menuitem id="menu_odoo_sync_parent"
+      parent="base.menu_administration"
+      groups="base.group_system"
+      sequence="5"
+      name="Odoo Sync"/>
+
+    <menuitem id="menu_odoo_sync"
+      action="act_odoo_sync"
+      parent="menu_odoo_sync_parent"
+      groups="base.group_system"
+      sequence="1"/>
+  
+  </data>
+</odoo>

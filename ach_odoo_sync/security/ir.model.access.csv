@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_odoo_sync,odoo_sync,model_odoo_sync,base.group_system,1,1,1,1
+access_odoo_sync_ir_model,odoo_sync.ir_model,model_odoo_sync_ir_model,base.group_system,1,1,1,1
+access_odoo_sync_ir_model_fields,odoo_sync.ir_model_fields,model_odoo_sync_ir_model_fields,base.group_system,1,1,1,1
